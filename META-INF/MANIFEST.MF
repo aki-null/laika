@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Sealed: true
+Class-Path: lib/pircbot.jar
+Main-Class: Laika
+
