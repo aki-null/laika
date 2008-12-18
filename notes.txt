@@ -1,3 +1,1 @@
 You continue to beat * on the ground.
-
-jar cvfm Bash.jar META-INF/MANIFEST.MF *

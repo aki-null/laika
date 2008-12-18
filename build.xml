@@ -1,37 +1,64 @@
-<project name="Laika" default="compile">
-  <property name="sourcedir" value="${basedir}/src"/>
-  <property name="targetdir" value="${basedir}/bin"/>
-  <property name="librarydir" value="${basedir}/lib"/>
- 
-  <path id="libraries">
-    <fileset dir="${librarydir}">
-      <include name="*.jar"/>
-    </fileset>
-  </path>
- 
-  <target name="clean">
-    <delete dir="${targetdir}"/>
-    <mkdir dir="${targetdir}"/>
-  </target>
- 
-  <target name="compile" depends="clean, copy-resources">
-    <javac srcdir="${sourcedir}"
-           destdir="${targetdir}"
-           classpathref="libraries"/>
-  </target>
- 
-  <target name="copy-resources">
-    <copy todir="${targetdir}">
-      <fileset dir="${sourcedir}">
-        <exclude name="**/*.java"/>
-      </fileset>
-    </copy>
-  </target>
-    
-  <target name="run" depends="compile">
-    <java fork="true" classname="Laika" classpathref="libraries">
-      <classpath path="${targetdir}"/>
-      <arg line="${args}"/>
-    </java>
-  </target>
+<project name="Laika" default="packageLaika">
+	<property name="sourcedir" value="${basedir}/src"/>
+	<property name="targetdir" value="${basedir}/bin"/>
+	<property name="librarydir" value="${basedir}/lib"/>
+
+	<path id="libraries">
+		<fileset dir="${librarydir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="clean2">
+		<delete dir="${targetdir}"/>
+		<mkdir dir="${targetdir}"/>
+	</target>
+
+	<target name="clean">
+		<delete>
+			<fileset dir="${targetdir}" includes="*.class"/>
+			<fileset file="${targetdir}/MANIFEST.MF"/>
+		</delete>
+	</target>
+
+	<target name="compile" depends="clean2, copy-resources">
+		<javac srcdir="${sourcedir}" destdir="${targetdir}" classpathref="libraries"/>
+	</target>
+
+	<target name="copy-resources">
+		<copy todir="${targetdir}">
+			<fileset dir="${sourcedir}">
+				<exclude name="**/*.java"/>
+			</fileset>
+			<fileset dir="${librarydir}" includes="*.jar"/>
+		</copy>
+		<copy todir="${basedir}">
+			<fileset dir="${librarydir}" includes="*.jar"/>
+		</copy>
+	</target>
+	
+	<target name="jar">
+		<delete file="laika.jar"/>
+		<property name="version.num" value="0.90"/>
+		<buildnumber file="build.num"/>
+		
+		<manifest file="${targetdir}/MANIFEST.MF">
+			<attribute name="Built-By" value="${user.name}"/>
+			<attribute name="Main-Class" value="Laika"/>
+			<attribute name="Class-Path" value="pircbot.jar"/>
+			<attribute name="Implementation-Version" value="${version.num}-b${build.number}"/>
+		</manifest>
+
+		<jar destfile="${targetdir}/laika.jar"
+			 basedir="${targetdir}"
+			 includes="*.class"
+			 manifest="${targetdir}/MANIFEST.MF"
+			 />
+	</target>
+	
+	<target name="packageLaika" depends="compile, jar, clean"/>
+	
+	<target name="run" depends="packageLaika">
+		<java jar="${targetdir}/laika.jar" fork="true"/>
+	</target>
 </project>
