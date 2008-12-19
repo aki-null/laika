@@ -66,6 +66,8 @@ public class LaikaBot extends PircBot {
 		fCommands.put("!id", new IdCommand());
 		fCommands.put("!addid", new AddIdCommand());
 		fCommands.put("!delid", new DelIdCommand());
+		fCommands.put("!911", new ReportHospCommand());
+		fCommands.put("!lost", new LostCommand());
 	}
 	
 	public void onDisconnect() {

@@ -39,7 +39,7 @@
 	
 	<target name="jar">
 		<delete file="laika.jar"/>
-		<property name="version.num" value="0.90"/>
+		<property name="version.num" value="0.91"/>
 		<buildnumber file="build.num"/>
 		
 		<manifest file="${targetdir}/MANIFEST.MF">
