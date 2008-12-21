@@ -38,18 +38,18 @@
 	</target>
 	
 	<target name="jar">
-		<delete file="laika.jar"/>
+		<delete file="${ant.project.name}.jar"/>
 		<property name="version.num" value="0.91"/>
 		<buildnumber file="build.num"/>
 		
 		<manifest file="${targetdir}/MANIFEST.MF">
 			<attribute name="Built-By" value="${user.name}"/>
-			<attribute name="Main-Class" value="Laika"/>
+			<attribute name="Main-Class" value="${ant.project.name}"/>
 			<attribute name="Class-Path" value="pircbot.jar"/>
 			<attribute name="Implementation-Version" value="${version.num}-b${build.number}"/>
 		</manifest>
 
-		<jar destfile="${targetdir}/laika.jar"
+		<jar destfile="${targetdir}/${ant.project.name}.jar"
 			 basedir="${targetdir}"
 			 includes="*.class"
 			 manifest="${targetdir}/MANIFEST.MF"
